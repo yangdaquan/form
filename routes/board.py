@@ -4,6 +4,7 @@ from flask import (
     redirect,
     url_for,
     Blueprint,
+    abort,
 )
 
 from routes import *
@@ -28,3 +29,13 @@ def add():
     Board.new(form)
     return redirect(url_for('topic.index'))
 
+@main.route("/delete")
+def delete():
+    id = int(request.args.get('id'))
+    u = current_user()
+    #改为管理员权限 现在不是
+    if u is not None:
+        Board.delete(id)
+        return redirect(url_for('topic.index'))
+    else:
+        abort(403)

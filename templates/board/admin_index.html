@@ -65,9 +65,12 @@
             {% for b in bs%}
             <div class='cell'>
                 <div class='receive_mails'>
-                    <a class='dark reply_author' href ="/topic?board_id={{ b.id }}">
-                        {{ b.title }}
+                   <a class= "topic_title" href ="/topic?board_id={{ b.id }}">
+                        &nbsp{{ b.title }}&nbsp
                     </a>
+                     <a class='dark reply_author' href="{{ url_for('board.delete', id=b.id, token=token) }}">
+                                删除
+                     </a>
                 </div>
             </div>
             {% endfor %}
