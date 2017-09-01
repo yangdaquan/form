@@ -1,7 +1,7 @@
 server {
     listen 80;
     location / {
-        proxy_pass http://localhost:3001;
+        proxy_pass http://localhost:2001;
     }
     location /uploads {
         alias /root/forum/user_image;
