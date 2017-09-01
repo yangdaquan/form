@@ -8,7 +8,7 @@ rm -f /etc/nginx/sites-available/default
 # 建立一个软连接
 ln -s -f /root/forum/config/forum.conf /etc/supervisor/conf.d/forum.conf
 # 不要再 sites-available 里面放任何东西
-ln -s -f /root/forum/config/forum.nginx /etc/nginx/sites-enabled/forum
+ln -s -f /root/forum/config/forum.nginx /etc/nginx/sites-enabled/forum/config
 
 # 重启服务器
 service supervisor restart
