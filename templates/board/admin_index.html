@@ -1,0 +1,77 @@
+
+{% extends "topic/base.html" %}
+{% block main %}
+<div id="main">
+    <div id="sidebar">
+    <div class="panel">
+        <div class="header">
+            <span class="col_fade">管理员信息</span>
+        </div>
+        <div class="inner">
+            <div class="user_card">
+                <div>
+                    <a class="user_avatar" href="/user/{{user.username}}">
+                        <img src="{{ user.user_image }}"  title="{{user.username}}">
+                    </a>
+                    <span class="user_name"><a class="dark" href="/user/{{user.username}}">{{user.username}}</a></span>
+
+                    <div class="board clearfix">
+                    </div>
+                    <div class="space clearfix"></div>
+                    <span class="signature">
+                        “
+
+                            {{user.signature}}
+
+                        ”
+                     </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                <ul class="breadcrumb">
+                    <li><a href="{{ url_for('topic.index') }}">主页</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li class="active">创建板块</li>
+                </ul>
+            </div>
+            <div class="inner">
+                <form class="form-horizontal" action="{{ url_for('board.add') }}" method="post">
+                    <div class="control-group">
+                        <label class="control-label">板块名</label>
+                        <div class="controls">
+                            <input class="input-xlarge readonly" id="title" name="title" size="30" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <input type="submit" class="span-primary submit_btn"  value="创建">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class='panel'>
+            <div class='header'>
+                <span class='col_fade'>
+                    已有板块
+                </span>
+            </div>
+            {% for b in bs%}
+            <div class='cell'>
+                <div class='receive_mails'>
+                    <a class='dark reply_author' href ="/topic?board_id={{ b.id }}">
+                        {{ b.title }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
