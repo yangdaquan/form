@@ -1,5 +1,5 @@
 import time
-from models.mongo_model import mongo_model, Mongo_Model
+from models.mongo_model import Mongo_Model
 
 
 class Board(Mongo_Model):
