@@ -1,8 +1,9 @@
-from models.mongua import Mongua
 import time
 
+from models.mongo_model import Mongo_Model
 
-class User(Mongua):
+
+class User(Mongo_Model):
     """
     User 是一个保存用户数据的 model
     现在只有两个属性 username 和 password

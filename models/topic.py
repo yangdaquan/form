@@ -1,9 +1,10 @@
 import time
-from models.mongua import Mongua
+
+from models.mongo_model import Mongo_Model
 from models.user import User
 
 
-class Topic(Mongua):
+class Topic(Mongo_Model):
     @classmethod
     def valid_names(cls):
         names = super().valid_names()

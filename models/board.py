@@ -1,8 +1,8 @@
 import time
-from models.mongua import Mongua
+from models.mongo_model import mongo_model, Mongo_Model
 
 
-class Board(Mongua):
+class Board(Mongo_Model):
 
     @classmethod
     def valid_names(cls):

@@ -186,3 +186,8 @@
 17:34:52 reply nishishui
 17:34:52 reply []
 17:34:52 after send mail
+23:11:27 reply add
+23:11:27 before send mail ImmutableMultiDict([('topic_id', '11'), ('content', 'dddddddddddddddd')])
+23:11:27 reply dddddddddddddddd
+23:11:27 reply []
+23:11:27 after send mail

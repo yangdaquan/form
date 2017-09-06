@@ -1,7 +1,7 @@
 import time
 from pymongo import MongoClient, DESCENDING
 
-mongua = MongoClient()
+mongo_model = MongoClient()
 
 
 def timestamp():
@@ -24,7 +24,7 @@ def next_id(name):
         'new': True,
     }
     # 存储数据的 id
-    doc = mongua.db['data_id']
+    doc = mongo_model.db['data_id']
     # find_and_modify 是一个原子操作函数
 
     # 没有原子操作
@@ -44,7 +44,7 @@ def next_id(name):
     return new_id
 
 
-class Mongua(object):
+class Mongo_Model(object):
     @classmethod
     def valid_names(cls):
         names = [
@@ -130,26 +130,11 @@ class Mongua(object):
         # return l
         return cls._find()
 
-    # TODO, 还应该有一个函数 find(name, **kwargs)
     @classmethod
     def _find(cls, **kwargs):
-        """
-        mongo 数据查询
-        db.Account.find().sort("UserName",pymongo.DESCENDING)  --降序
-        db.posts.find(...).sort([
-          ('date', pymongo.ASCENDING),
-          ('other_field', pymongo.DESCENDING)
-        ]):
-        """
         name = cls.__name__
         kwargs['deleted'] = False
-        #flag_sort = '__sort'
-        #sort = kwargs.pop(flag_sort, None)
-        ds = mongua.db[name].find(kwargs)
-        #ds = mongua.db[name].find(kwargs).sort('created_time', DESCENDING)
-        # if sort == 'ascending'
-        # if sort is not None:
-        #     ds = ds.sort(sort)
+        ds = mongo_model.db[name].find(kwargs)
         l = [cls._new_with_bson(d) for d in ds]
         return l
 
@@ -183,7 +168,7 @@ class Mongua(object):
 
     def save(self):
         name = self.__class__.__name__
-        mongua.db[name].save(self.__dict__)
+        mongo_model.db[name].save(self.__dict__)
 
     @classmethod
     def delete(cls,id):
@@ -194,7 +179,7 @@ class Mongua(object):
         values = {
              '$set': {'deleted': True},
         }
-        mongua.db[name].update_one(query, values)
+        mongo_model.db[name].update_one(query, values)
 
     def blacklist(self):
         b = [

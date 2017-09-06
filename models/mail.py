@@ -1,7 +1,8 @@
-from models.mongua import Mongua
+
+from models.mongo_model import Mongo_Model
 
 
-class Mail(Mongua):
+class Mail(Mongo_Model):
     @classmethod
     def valid_names(cls):
         names = super().valid_names()
