@@ -52,7 +52,7 @@ def add_img():
 # nginx 静态文件
 @main.route("/uploads/<filename>")
 def uploads(filename):
-    return send_from_directory('user_image', filename)
+    return send_from_directory(os.path.abspath('user_image'), filename)
 
 
 @main.route("/signature/update", methods=['POST'])
