@@ -13,7 +13,7 @@ application = app.configured_app()
 
 """
 
-➜  ~ cat /etc/supervisor/conf.d/per-forum.conf
+➜  ~ cat /etc/supervisor/conf.d/per-per-forum.conf
 
 [program:bbs]
 command=/usr/local/bin/gunicorn wsgi -c gunicorn.config.py
