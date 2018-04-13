@@ -1,8 +1,7 @@
-import time
-from models.mongo_model import Mongo_Model
+from models.monbase import Monbase
 
 
-class Board(Mongo_Model):
+class Board(Monbase):
 
     @classmethod
     def valid_names(cls):

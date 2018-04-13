@@ -1,7 +1,10 @@
 import time
-from pymongo import MongoClient, DESCENDING
 
-mongo_model = MongoClient()
+from pymongo import MongoClient
+from utils import log
+
+
+monbase = MongoClient()
 
 
 def timestamp():
@@ -24,27 +27,13 @@ def next_id(name):
         'new': True,
     }
     # 存储数据的 id
-    doc = mongo_model.db['data_id']
+    doc = monbase.db['data_id']
     # find_and_modify 是一个原子操作函数
-
-    # 没有原子操作
-    # A 查询拿到了 1
-    # B 查询拿到了 1
-    # B 先更新 数据变成了2
-    # A 数据还是2
-
-    # 有原子操作
-    # A 查询拿到了 1
-    # B 查询拿不到数据 会等待
-    # A 更新 数据变成了2
-    # B 查询拿到数据2
-
-
     new_id = doc.find_and_modify(**kwargs).get('seq')
     return new_id
 
 
-class Mongo_Model(object):
+class Monbase(object):
     @classmethod
     def valid_names(cls):
         names = [
@@ -80,6 +69,7 @@ class Mongo_Model(object):
         for f in names:
             k, t, v = f
             if k in form:
+                # log('id', form[id])
                 setattr(m, k, t(form[k]))
             else:
                 # 设置默认值
@@ -123,18 +113,17 @@ class Mongo_Model(object):
 
     @classmethod
     def all(cls):
-        # 按照 id 升序排序
-        # name = cls.__name__
-        # ds = mongua.db[name].find()
-        # l = [cls._new_with_bson(d) for d in ds]
-        # return l
         return cls._find()
 
+    # TODO, 还应该有一个函数 find(name, **kwargs)
     @classmethod
     def _find(cls, **kwargs):
+        """
+        mongo 数据查询
+        """
         name = cls.__name__
         kwargs['deleted'] = False
-        ds = mongo_model.db[name].find(kwargs)
+        ds = monbase.db[name].find(kwargs)
         l = [cls._new_with_bson(d) for d in ds]
         return l
 
@@ -168,18 +157,18 @@ class Mongo_Model(object):
 
     def save(self):
         name = self.__class__.__name__
-        mongo_model.db[name].save(self.__dict__)
+        monbase.db[name].save(self.__dict__)
 
     @classmethod
-    def delete(cls,id):
+    def delete(cls, id):
         name = cls.__name__
         query = {
             'id': id,
         }
         values = {
-             '$set': {'deleted': True},
+            '$set': {'deleted': True},
         }
-        mongo_model.db[name].update_one(query, values)
+        monbase.db[name].update_one(query, values)
 
     def blacklist(self):
         b = [

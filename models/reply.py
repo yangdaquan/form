@@ -1,10 +1,7 @@
-import time
-from models.mongo_model import Mongo_Model
-from models.topic import Topic
-from models.user import User
+from models.monbase import Monbase
 
 
-class Reply(Mongo_Model):
+class Reply(Monbase):
     @classmethod
     def valid_names(cls):
         names = super().valid_names()
@@ -16,31 +13,23 @@ class Reply(Mongo_Model):
         return names
 
     def user(self):
+        from .user import User
         u = User.find(self.user_id)
         return u
 
-
-    @classmethod
-    def topic_of_reply(cls,user_id):
-        rs = Reply.find_all(user_id=user_id)
-        ts = []
-        for r in rs:
-            t = Topic.find(r.topic_id)
-            if t not in ts:
-                ts.append(t)
-        return ts
+    def topic(self):
+        from .topic import Topic
+        t = Topic.find(self.topic_id)
+        return t
 
 
     @classmethod
-    def topic_of_reply_sort(cls, user_id):
-        ts = Reply.topic_of_reply(user_id)
-        l = []
-        if ts != [None]:
-            ts = sorted(ts, key=lambda x: x.created_time, reverse=True)
-            if len(ts) >= 1:
-                for i in range(len(ts)):
-                    l.append(ts[i])
-            else:
-                return ts
-        return l
+    def replys_for_user(cls, uid):
+        rs = cls.find_all(user_id=uid)
+        return rs
 
+
+    @classmethod
+    def replys_for_topic(cls, tid):
+        rs = cls.find_all(topic_id=tid)
+        return rs

@@ -1,13 +1,7 @@
-import time
-
-from models.mongo_model import Mongo_Model
+from models.monbase import Monbase
 
 
-class User(Mongo_Model):
-    """
-    User 是一个保存用户数据的 model
-    现在只有两个属性 username 和 password
-    """
+class User(Monbase):
 
     @classmethod
     def valid_names(cls):
@@ -16,8 +10,9 @@ class User(Mongo_Model):
             ('username', str, ''),
             ('password', str, ''),
             ('user_image', str, '/uploads/default.png'),
-            ('signature', str, '没有留下签名'),
-            ('point', int, 0),
+            ('signature', str, '“这家伙很懒，什么个性签名都没有留下。”'),
+            ('floor', str, '0'),
+            ('content', str, ''),
         ]
         return names
 
@@ -25,7 +20,6 @@ class User(Mongo_Model):
         import hashlib
         def sha256(ascii_str):
             return hashlib.sha256(ascii_str.encode('ascii')).hexdigest()
-
         hash1 = sha256(password)
         hash2 = sha256(hash1 + salt)
         return hash2
@@ -52,10 +46,9 @@ class User(Mongo_Model):
 
     @classmethod
     def validate_login(cls, form):
-        u = User()
-        u.username = form.get('username','')
-        u.pwd = form.get('password','')
-
+        u = cls()
+        u.username = form.get('username', '')
+        u.pwd = form.get('password', '')
         user = User.find_by(username=u.username)
         if user is not None and user.password == u.salted_password(u.pwd):
             return user
